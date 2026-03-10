@@ -158,11 +158,11 @@ if run_button:
 
  # --- PHASE 3, TASK 3: IDENTIFYING THE BEST PORTFOLIO ---
 
-max_sharpe_idx = sim_df['Sharpe'].idxmax()
-
+    max_sharpe_idx = sim_df['Sharpe'].idxmax()
     best_ret = sim_df.loc[max_sharpe_idx, 'Return']
     best_vol = sim_df.loc[max_sharpe_idx, 'Risk']
     best_weights = all_weights[max_sharpe_idx]
+
 
     st.subheader("🏆 Optimal Portfolio Found")
     col1, col2, col3 = st.columns(3)
@@ -176,8 +176,6 @@ max_sharpe_idx = sim_df['Sharpe'].idxmax()
         'Weight': best_weights
     })
     st.table(allocation_df)
-
-
 
 # --- PHASE 3, TASK 4: VISUALIZATION ---
 

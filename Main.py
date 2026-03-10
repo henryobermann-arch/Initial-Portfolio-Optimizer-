@@ -158,13 +158,7 @@ if run_button:
 
  # --- PHASE 3, TASK 3: IDENTIFYING THE BEST PORTFOLIO ---
 
-if run_button:
-    
-    sim_df = pd.DataFrame(sim_data)
-    st.success("Simulations Complete!")
-
-   
-    max_sharpe_idx = sim_df['Sharpe'].idxmax()
+max_sharpe_idx = sim_df['Sharpe'].idxmax()
 
     best_ret = sim_df.loc[max_sharpe_idx, 'Return']
     best_vol = sim_df.loc[max_sharpe_idx, 'Risk']
@@ -189,7 +183,6 @@ if run_button:
 
 st.write("### Portfolio Risk vs. Return")
 
-    
     fig = px.scatter(
         sim_df, 
         x='Risk', 
@@ -200,7 +193,6 @@ st.write("### Portfolio Risk vs. Return")
         color_continuous_scale='Viridis'
     )
 
-    
     fig.add_scatter(
         x=[best_vol], 
         y=[best_ret], 
@@ -208,5 +200,4 @@ st.write("### Portfolio Risk vs. Return")
         name="Optimal Portfolio"
     )
 
-    
     st.plotly_chart(fig, use_container_width=True)

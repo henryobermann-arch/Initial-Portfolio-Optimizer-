@@ -1,6 +1,5 @@
-The list of libraries: 
-streamlit, 
-pandas, 
-numpy,
-yfinance,
-plotly.
+streamlit
+pandas
+numpy
+yfinance
+plotly

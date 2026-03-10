@@ -189,23 +189,24 @@ if run_button:
 
 st.write("### Portfolio Risk vs. Return")
 
+   
+    fig = px.scatter(
+        sim_df, 
+        x='Risk', 
+        y='Return', 
+        color='Sharpe',
+        labels={'Risk': 'Annualized Risk (Volatility)', 'Return': 'Annualized Return'},
+        title="Monte Carlo Simulation: Finding the Efficient Frontier",
+        color_continuous_scale='Viridis'
+    )
 
-fig = px.scatter(
-    sim_df, 
-    x='Risk', 
-    y='Return', 
-    color='Sharpe',
-    labels={'Risk': 'Annualized Risk (Volatility)', 'Return': 'Annualized Return'},
-    title="Monte Carlo Simulation: Finding the Efficient Frontier",
-    color_continuous_scale='Viridis'
-)
+    
+    fig.add_scatter(
+        x=[best_vol], 
+        y=[best_ret], 
+        marker=dict(color='red', size=15, symbol='star'),
+        name="Optimal Portfolio"
+    )
 
-
-fig.add_scatter(
-    x=[best_vol], 
-    y=[best_ret], 
-    marker=dict(color='red', size=15, symbol='star'),
-    name="Optimal Portfolio"
-)
-
-st.plotly_chart(fig, use_container_width=True)
+    
+    st.plotly_chart(fig, use_container_width=True)

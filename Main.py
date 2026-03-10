@@ -189,7 +189,7 @@ if run_button:
 
 st.write("### Portfolio Risk vs. Return")
 
-   
+    
     fig = px.scatter(
         sim_df, 
         x='Risk', 

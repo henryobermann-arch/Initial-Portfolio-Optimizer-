@@ -119,42 +119,44 @@ run_button = st.sidebar.button("Run Optimization")
 # --- PHASE 3, TASK 2: MONTE CARLO SIMULATION ---
 
 if run_button:
-    st.write("🔄 Running simulations...")
+    st.write("🔄 Fetching latest data and running simulations...")
+    data = yf.download(selected_tickers, period="3y")["Close"]
     
-    
-    all_weights = []
-    ret_arr = []
-    vol_arr = []
-    sharpe_arr = []
+    if data.empty:
+        st.error("Could not find data for these tickers. Please try again.")
+    else:
+        daily_returns = data.pct_change()
+        current_returns = daily_returns.mean() * 252
+        current_vol = daily_returns.std() * np.sqrt(252)
 
-    for i in range(num_simulations):
-
-        weights = np.array(np.random.random(len(selected_tickers)))
-        weights = weights / np.sum(weights)
-        all_weights.append(weights)
-
-      
-        p_ret = np.sum(annual_returns[selected_tickers] * weights)
-        ret_arr.append(p_ret)
+        all_weights = []
+        ret_arr = []
+        vol_arr = []
+        sharpe_arr = []
 
         
-        p_vol = np.sum(annual_volatility[selected_tickers] * weights)
-        vol_arr.append(p_vol)
+        for i in range(num_simulations):
+            weights = np.array(np.random.random(len(selected_tickers)))
+            weights = weights / np.sum(weights)
+            all_weights.append(weights)
 
-       
+            p_ret = np.sum(current_returns * weights)
+            ret_arr.append(p_ret)
+
+            p_vol = np.sum(current_vol * weights)
+            vol_arr.append(p_vol)
+
+            sharpe_arr.append(p_ret / p_vol)
+
         
-        sharpe_arr.append(p_ret / p_vol)
-
-    
-    sim_data = {
-        'Return': ret_arr,
-        'Risk': vol_arr,
-        'Sharpe': sharpe_arr
-    }
-    sim_df = pd.DataFrame(sim_data)
-    
-    st.success("Simulations Complete!")
-    st.dataframe(sim_df.head()) 
+        sim_data = {
+            'Return': ret_arr,
+            'Risk': vol_arr,
+            'Sharpe': sharpe_arr
+        }
+        sim_df = pd.DataFrame(sim_data)
+        
+        st.success("Simulations Complete!") 
 
  # --- PHASE 3, TASK 3: IDENTIFYING THE BEST PORTFOLIO ---
 
